@@ -28,12 +28,14 @@ const drawMessages = async (ul) => {
     messages.forEach((message) => {
         const li = document.createElement('li');
         li.style.backgroundColor = '#9A8C98';
-        li.style.width = '50%';
+        li.style.maxWidth = '50%';
         li.style.height = 'auto';
         li.style.padding = '5px';
         li.style.margin = '5px';
         li.style.border = '2px solid black';
         li.style.borderRadius = '10px';
+        li.style.whiteSpace = 'pre-wrap'; 
+        li.style.wordBreak = 'break-word';
 
         const user = document.createElement('span');
         user.style.fontWeight='bold';
@@ -103,11 +105,13 @@ const drawInput = async (ul) => {
     divify.style.flexDirection = 'row';
     divify.style.marginTop = '10px';
     divify.style.gap = '10px';
-    divify.textAlign = 'center'
+    divify.style.width = '90%';  // Alineado con la lista de mensajes
+    divify.style.margin = 'auto'; // Centrarlo
+    divify.style.marginTop = '10px'
 
     const textarea = document.createElement('textarea');
     textarea.style.resize = 'none';
-    textarea.style.width = '80%';
+    textarea.style.width = '110%'; // Ocupar todo el ancho del div
     textarea.style.border = '2px solid black';
     textarea.style.borderRadius = '10px';
     textarea.style.padding = '10px';
@@ -115,10 +119,8 @@ const drawInput = async (ul) => {
 
     const button = document.createElement('button');
     button.append('Enviar');
-
     
     const sendMessage = async () => {
-        // msg de menos 140
         const messageText = textarea.value;
 
         if (messageText.length > 140) {
@@ -131,19 +133,17 @@ const drawInput = async (ul) => {
             user: 'Bran'
         };
         await postMessages(message);
-        textarea.value = ''; // Limpia el textarea
-        await drawMessages(ul); // Refresca los mensajes
+        textarea.value = ''; 
+        await drawMessages(ul); 
     };
 
-    // "Enter" para hacer submit
     textarea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { // shift 
-            e.preventDefault(); // Evitar el salto de linea
+        if (e.key === 'Enter' && !e.shiftKey) { 
+            e.preventDefault(); 
             sendMessage();
         }
     });
 
-    // enviar con el btn
     button.onclick = sendMessage;
 
     divify.append(textarea);
@@ -152,10 +152,9 @@ const drawInput = async (ul) => {
     document.body.append(divify);
 };
 
-
 const main = async () => {
-    const ul = await messagesContainer(); // Guardamos la referencia de la lista
-    await drawInput(ul); // Pasamos la referencia para actualizar la misma lista
+    const ul = await messagesContainer();
+    await drawInput(ul); 
 
     // Auto-refresh
     setInterval(() => drawMessages(ul), 30000);
