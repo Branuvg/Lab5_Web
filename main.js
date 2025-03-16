@@ -22,14 +22,25 @@ const drawMessages = async (ul) => {
     ul.innerHTML = ''; // Limpiar la lista antes de actualizar
     const messages = await getMessages();
 
+    const scrollPosition = ul.scrollTop;
+    const isAtBottom = ul.scrollHeight - ul.clientHeight <= scrollPosition + 10;
+
     messages.forEach((message) => {
         const li = document.createElement('li');
-
+        li.style.backgroundColor = '#9A8C98';
+        li.style.width = '50%';
+        li.style.height = 'auto';
+        li.style.padding = '5px';
+        li.style.margin = '5px';
+        li.style.border = '2px solid black';
+        li.style.borderRadius = '10px';
 
         const user = document.createElement('span');
+        user.style.fontWeight='bold';
         
         if (message.user === 'Bran') {
-            li.style.marginLeft = '20%';
+            li.style.marginLeft = '48%';
+            li.style.backgroundColor = '#6a97c4';
         }
 
         user.append(`${message.user}: `);
@@ -42,9 +53,6 @@ const drawMessages = async (ul) => {
         
         ul.append(li);
     });
-
-    const scrollPosition = ul.scrollTop;
-    const isAtBottom = ul.scrollHeight - ul.clientHeight <= scrollPosition + 10;
 
     if (isAtBottom) {
         ul.scrollTop = ul.scrollHeight; 
@@ -63,7 +71,7 @@ const messagesContainer = async () => {
     h1.style.fontSize = "40px"
 
     const ul = document.createElement('ul');
-    ul.style.listStyle='none';
+    ul.style.listStyle = 'none';
     ul.style.width = '90%';
     ul.style.height = '70vh';
 
@@ -71,7 +79,7 @@ const messagesContainer = async () => {
      ul.style.overflow = 'auto';
      ul.style.setProperty('overflow', 'auto');
      ul.style.setProperty('scrollbar-width', 'none');
-     ul.style.border = '5px solid black';
+     ul.style.border = '4px solid black';
      ul.style.borderRadius = '10px';
      ul.style.padding = '10px';
      ul.style.margin = 'auto';
@@ -88,10 +96,22 @@ const messagesContainer = async () => {
     return ul;
 };
 
+
 const drawInput = async (ul) => {
     const divify = document.createElement('div');
+    divify.style.display = 'flex';
+    divify.style.flexDirection = 'row';
+    divify.style.marginTop = '10px';
+    divify.style.gap = '10px';
+    divify.textAlign = 'center'
 
     const textarea = document.createElement('textarea');
+    textarea.style.resize = 'none';
+    textarea.style.width = '80%';
+    textarea.style.border = '2px solid black';
+    textarea.style.borderRadius = '10px';
+    textarea.style.padding = '10px';
+    textarea.style.fontSize = '16px';
 
     const button = document.createElement('button');
     button.append('Enviar');
