@@ -8,6 +8,8 @@ const getMessages = async () => {
     }
 };
 
+document.body.style.backgroundImage = "url('https://i.pinimg.com/564x/f8/2e/e5/f82ee56e77a8cf3dcfb737c6d0ddf403.jpg')";
+
 const postMessages = async (message) => {
     const body = JSON.stringify(message);
     await fetch('https://chat.calicheoficial.lat/messages', {
@@ -20,12 +22,9 @@ const drawMessages = async (ul) => {
     ul.innerHTML = ''; // Limpiar la lista antes de actualizar
     const messages = await getMessages();
 
-    // Guardar la posición actual del scroll antes de actualizar
-    const scrollPosition = ul.scrollTop;
-    const isAtBottom = ul.scrollHeight - ul.clientHeight <= scrollPosition + 10;
-
     messages.forEach((message) => {
         const li = document.createElement('li');
+
 
         const user = document.createElement('span');
         
@@ -44,11 +43,49 @@ const drawMessages = async (ul) => {
         ul.append(li);
     });
 
+    const scrollPosition = ul.scrollTop;
+    const isAtBottom = ul.scrollHeight - ul.clientHeight <= scrollPosition + 10;
+
     if (isAtBottom) {
         ul.scrollTop = ul.scrollHeight; 
     } else {
         ul.scrollTop = scrollPosition; 
     }
+};
+
+const messagesContainer = async () => {
+    const div = document.createElement('div');
+    const h1 = document.createElement('h1');
+
+    h1.append('Mensajes de la clase');
+    h1.style.textAlign = "center"
+    h1.style.color = "white"
+    h1.style.fontSize = "40px"
+
+    const ul = document.createElement('ul');
+    ul.style.listStyle='none';
+    ul.style.width = '90%';
+    ul.style.height = '70vh';
+
+     ul.style.overflowY = 'auto'
+     ul.style.overflow = 'auto';
+     ul.style.setProperty('overflow', 'auto');
+     ul.style.setProperty('scrollbar-width', 'none');
+     ul.style.border = '5px solid black';
+     ul.style.borderRadius = '10px';
+     ul.style.padding = '10px';
+     ul.style.margin = 'auto';
+     ul.style.display = 'block';
+     ul.style.backgroundColor = '#6AC59C';
+ 
+
+    await drawMessages(ul); // Llenar la lista inicialmente
+
+    div.append(h1);
+    div.append(ul);
+
+    document.body.append(div);
+    return ul;
 };
 
 const drawInput = async (ul) => {
@@ -95,25 +132,9 @@ const drawInput = async (ul) => {
     document.body.append(divify);
 };
 
-const drawMessagesContainer = async () => {
-    const div = document.createElement('div');
-    const h1 = document.createElement('h1');
-
-    h1.append('Mensajes de la clase');
-
-    const ul = document.createElement('ul');
-
-    await drawMessages(ul); // Llenar la lista inicialmente
-
-    div.append(h1);
-    div.append(ul);
-
-    document.body.append(div);
-    return ul;
-};
 
 const main = async () => {
-    const ul = await drawMessagesContainer(); // Guardamos la referencia de la lista
+    const ul = await messagesContainer(); // Guardamos la referencia de la lista
     await drawInput(ul); // Pasamos la referencia para actualizar la misma lista
 
     // Auto-refresh
